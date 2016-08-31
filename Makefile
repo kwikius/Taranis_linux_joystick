@@ -14,16 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-INCLUDES = 
+# QUAN_ROOT is path to my quan library https://github.com/kwikius/quan-trunk.git
+
+ifndef QUAN_ROOT
+$(error  "QUAN_ROOT must be defined to path to my quan library --> https://github.com/kwikius/quan-trunk.git")
+endif
+
+INCLUDES = $(QUAN_ROOT)
 
 CC = g++
 LD = g++
 
-#INCLUDE_ARGS = $(patsubst %,-I%,$(INCLUDES))
+INCLUDE_ARGS = $(patsubst %,-I%,$(INCLUDES))
 
 CFLAGS = -std=gnu++11 -Wall -Os 
 
-objects = main.o 
+objects = main.o key_was_pressed.o
 
 .PHONY: clean all
 
@@ -32,8 +38,11 @@ all: taranis_joystick.exe
 taranis_joystick.exe : $(objects)
 	$(LD) $(objects) $(CFLAGS) -s -o taranis_joystick.exe -lpthread
 
-$(objects) : %.o : %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+main.o : %.o : %.cpp
+	$(CC) $(CFLAGS) $(INCLUDE_ARGS) -c $< -o $@
+
+key_was_pressed.o : $(QUAN_ROOT)/quan_matters/src/linux/key_was_pressed.cpp
+	$(CC) $(CFLAGS) $(INCLUDE_ARGS) -c $< -o $@
 
 clean:
 	-rm -rf *.o *.exe
