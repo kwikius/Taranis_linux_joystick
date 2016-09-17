@@ -5,6 +5,10 @@
 
 #include <python2.7/Python.h>
 
+// todo add 
+// open_joystick
+// close_joystick
+
 namespace {
 
    quan::joystick * js = nullptr;
@@ -24,14 +28,14 @@ namespace {
    }
 
    PyMethodDef JoystickMethods[] = {
-      { "read_joystick", read_joystick, METH_VARARGS, "Read Joystick channel N" },
+      { "read_joystick", read_joystick, METH_VARARGS, "Read joystick channel N" },
       { NULL, NULL, 0, NULL } // sentinel
    };
 }
 
 PyMODINIT_FUNC initjoystick(void)
 {
-    js = new quan::joystick{"/dev/js0");
+    js = new quan::joystick{"/dev/input/js0"); 
     Py_InitModule("read_joystick", JoystickMethods);
 }
 
