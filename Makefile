@@ -36,7 +36,7 @@ objects = main.o key_was_pressed.o
 all: taranis_joystick.exe
 
 taranis_joystick.exe : $(objects)
-	$(LD) $(objects) $(CFLAGS) -s -o taranis_joystick.exe -lpthread
+	$(LD) $(objects) $(CFLAGS) -s -o taranis_joystick.exe -lpython2.7 -lpthread
 
 main.o : %.o : %.cpp
 	$(CC) $(CFLAGS) $(INCLUDE_ARGS) -c $< -o $@
